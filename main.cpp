@@ -158,3 +158,180 @@ void REMOVEV(Vertex **list, int iC)
     cout << " " << list[d]->getName() << " idx=" << list[d]->getIndex() << endl;
     }*/
 }
+void ADDE(Vertex **list, int iC) 
+{
+  if(list[0] == NULL || list[1] == NULL) 
+  {
+    //have at least two vectors
+    cout << endl << "Input at least two vectors first." << endl;
+    return;
+  }
+  char in1, in2;
+  cout << endl << "Between which two vertices should the edge be constructed:" << endl;
+  cout << ">>V1: ";
+  cin >> in1;
+  cin.clear();
+  cin.ignore(10000, '\n');
+  cout << ">>V2: ";
+  cin >> in2;
+  cin.clear();
+  cin.ignore(10000, '\n');
+  //find positions/index of vectors in list
+  Vertex* v1 = findVertex(list, in1, iC);
+  Vertex* v2 = findVertex(list, in2, iC);
+  if (v1 == NULL || v2 == NULL) 
+  {
+    cout << endl << "Try again. Invalid vertex." << endl;
+    return;
+  }
+  //assign edges
+  cout << " >>Edge value: ";
+  int val;
+  cin >> val;
+  cin.clear();
+  cin.ignore(10000, '\n');
+  v1->setEdge(v2->getIndex(), val);
+  v2->setEdge(v1->getIndex(), val);
+}
+
+void REMOVEE(Vertex **list, int iC) 
+{
+  if(list[0] == NULL || list[1] == NULL) 
+  {
+    //have at least two vectors
+    cout << endl << "Input at least two vertices first." << endl;
+    return;
+  }
+  char in1, in2;
+  cout << "What vectors are connected by this edge?" << endl;
+  cout << ">>V1: ";
+  cin >> in1;
+  cin.clear();
+  cin.ignore(10000, '\n');
+  cout << ">>V2: ";
+  cin >> in2;
+  cin.clear();
+  cin.ignore(10000, '\n');
+  Vertex* v1 = findVertex(list, in1, iC);
+  Vertex* v2 = findVertex(list, in2, iC);
+  if (v1 == NULL || v2 == NULL) 
+  {
+    cout << endl << "Try again. Invalid vertex." << endl;
+    return;
+  }
+  cout << endl << "Edge found ... ";
+  v1->setEdge(v2->getIndex(), 0);
+  v2->setEdge(v1->getIndex(), 0);
+  cout << "Edge removed." << endl;
+}
+
+void FSP(Vertex **list, int iC) 
+{
+  if (list[0] == NULL || list[1] == NULL) 
+  {
+    //need at least two vectors
+    cout << endl << "Input at least two vertices first." << endl;
+    return;
+  }
+  char in1, in2;
+  cout << ">>Starting vertex: ";
+  cin >> in1;
+  cin.clear();
+  cin.ignore(10000, '\n');
+  cout << ">>Ending vertex: ";
+  cin >> in2;
+  cin.clear();
+  cin.ignore(10000, '\n');
+  Vertex* start = findVertex(list, in1, iC);
+  Vertex* end = findVertex(list, in2, iC);
+  if (start == NULL || end == NULL) {
+    cout << endl << "Try again. Invalid vertex." << endl;
+    return;
+  }
+}
+//print adjacency matrix
+void PRINT(Vertex **list, int iC)
+{
+  char display[21][21];  //[row][col]
+  //initialize empty matrix
+  for (int r = 0; r < 21; r++) 
+  {
+    for (int c = 0; c < 21; c++) 
+    {
+      display[r][c] = ' ';
+    }
+  }
+  int edgeDisp[20][20];
+  int count = 0;
+  //construct adjacency matrix visual
+  //first row and column
+  while (count < iC) 
+  {
+    display[0][count+1] = (list[count])->getName();
+    display[count+1][0] = (list[count])->getName();
+    count++;
+  }
+  //create edge display list
+  for (int r = 0; r < iC; r++) 
+  {
+    Vertex* v = list[r];
+    for (int c = 0; c < iC; c++) 
+    {
+      Vertex* vr = list[c];
+      if (v->getEdge(vr->getIndex()) != 0) 
+      {
+	    edgeDisp[r][c] = 'T';
+      } 
+      else 
+      {
+	    edgeDisp[r][c] = 'F';
+      }
+    }
+  }
+  //place edge matrix in display array
+  for (int r = 0; r < iC; r++) 
+  {
+    for (int c = 0; c < iC; c++) 
+    {
+      display[r+1][c+1] = edgeDisp[r][c];
+    }
+  }
+  //display adjacency matrix
+  for (int r = 0; r < 21; r++) 
+  {
+    for (int c = 0; c < 21; c++) 
+    {
+      if (display[r][c] == 'T' && c != 0 && r != 0) 
+      {
+	    
+      } 
+      else if (display[r][c] == 'F' && c != 0 && r != 0) 
+      {
+	    cout << RED << display[r][c] << RESET << '\t';
+      } 
+      else 
+      {
+	    cout << display[r][c] << '\t';
+      }
+    }
+    cout << endl;
+    if (display[r+1][0] == ' ') break;
+  }
+}
+
+Vertex* findVertex(Vertex** list, char in, int iC) 
+{
+  int i = 0;
+  while(i < iC) 
+  {
+    if((list[i])->getName() == in) 
+    {
+      return (list[i]);
+    } 
+    else 
+    {
+      i++;
+    }
+  }
+  return NULL;
+}
