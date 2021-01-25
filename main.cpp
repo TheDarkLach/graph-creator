@@ -75,3 +75,86 @@ int main()
   }
   return 0; //end program
 }
+
+void ADDV(Vertex **list, int iC) 
+{
+  //initialize new vector object
+  Vertex* newPt = new Vertex();
+  newPt->setIndex(iC);
+  //read user input
+  char in;
+  cout << ">>Char of new vertex: ";
+  cin >> in;
+  cin.clear();
+  cin.ignore(10000, '\n');
+  //assign input values to object
+  newPt->setName(in);
+  //add vertex to list
+  list[iC] = newPt;
+  cout << endl << "Vertex " << newPt->getName() << " was added." << endl;
+}
+
+void REMOVEV(Vertex **list, int iC) 
+{
+  if (list[0] == NULL) 
+  {
+    //at least one vertex
+    cout << endl << "YOu need a vertex first." << endl;
+    return;
+  }
+  char in;
+  cout << ">>Vertex to be removed: ";
+  cin >> in;
+  cin.clear();
+  cin.ignore(10000, '\n');
+  Vertex* v = findVertex(list, in, iC);
+  if (v == NULL) 
+  {
+    cout << endl << "No such vector found. Try again." << endl;
+    return;
+  }
+  int i = v->getIndex();
+  v->~Vertex(); //remove data from vertex
+  cout << "Removing vertex at index " << i << endl;
+  //redo edge list of each vertex
+  for (int r = 0; r < iC; r++) 
+  {
+    Vertex* curr = list[r];
+    for (int ce = i; ce < iC; ce++) 
+    {
+      if (ce == iC-1) 
+      {
+        //case of final position edge
+        curr->setEdge(ce, 0);
+      } 
+      else 
+      {
+        //move all edges above removed index down by 1 index
+        int next = ce+1;
+        curr->setEdge(ce, curr->getEdge(next));
+      }
+    }
+    list[r] = curr;
+  }
+  //remove vertex from list
+  list[i] = NULL;
+  //move all elements that follow down by 1 index
+  while (i < iC) 
+  {
+    if (i == iC-1) 
+    {
+      //last case
+      list[i] = NULL;
+      break;
+    }
+    list[i] = list[i+1];
+    (list[i])->setIndex(i);
+    i++;
+  }
+  cout << endl << "Vertex removed." << endl;
+  /*
+  cout << endl << "New vertex list:" << endl;
+  for (int d = 0; d < iC--; d++) {
+    cout << " " << list[d]->getName() << " idx=" << list[d]->getIndex() << endl;
+    }*/
+}
