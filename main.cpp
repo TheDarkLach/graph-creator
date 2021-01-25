@@ -67,6 +67,7 @@ int main()
     {
       cout << endl << "Find the shortest path with Dijkstra's Algorithm." << endl;//still can't spell it without looking it up, no clue how to say it
       FSP(list, iC);
+      cout << list;
     }
     else 
     {
