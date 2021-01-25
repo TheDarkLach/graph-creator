@@ -65,7 +65,7 @@ int main()
     }
     else if (strcmp(input, "fsp") == 0) 
     {
-      cout << endl << "Finding the shortest path with Dijkstra's Algorithm." << endl;//still can't spell it without looking it up, no clue how to say it
+      cout << endl << "Find the shortest path with Dijkstra's Algorithm." << endl;//still can't spell it without looking it up, no clue how to say it
       FSP(list, iC);
     }
     else 
@@ -244,7 +244,8 @@ void FSP(Vertex **list, int iC)
   cin.ignore(10000, '\n');
   Vertex* start = findVertex(list, in1, iC);
   Vertex* end = findVertex(list, in2, iC);
-  if (start == NULL || end == NULL) {
+  if (start == NULL || end == NULL) 
+  {
     cout << endl << "Try again. Invalid vertex." << endl;
     return;
   }
@@ -315,7 +316,10 @@ void PRINT(Vertex **list, int iC)
       }
     }
     cout << endl;
-    if (display[r+1][0] == ' ') break;
+    if (display[r+1][0] == ' ')
+    {
+        break;
+    }
   }
 }
 
