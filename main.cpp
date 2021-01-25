@@ -1,5 +1,6 @@
 /*
     Graph creator c++ Faizan Karim
+    messed up shortest path at first but got it
  */
 
 #include <cstring>
@@ -14,8 +15,7 @@
 
 using namespace std;
 
-//colors to make the console look "pretty"
-
+//colooors
 #define RESET   "\033[0m"
 #define RED     "\033[31m"
 #define GREEN   "\033[32m"
@@ -35,14 +35,15 @@ void findShortest(char startLabel, char  endLabel);
 void printAdjacency();
 
 int main() 
-{//main function for getting input
+{
   
   int numInput;
   char charInput;
   char charInput2;
   
-  while (true) {//while user hasn't quit, keep going
-    cout << endl << "Would you like to:" << endl;
+  while (true) 
+  {
+    cout << endl << "Enter a number:" << endl;
     cout << "1: Add a vertex" << endl;
     cout << "2: Add an edge" << endl;
     cout << "3: Remove a vertex" << endl;
@@ -56,7 +57,8 @@ int main()
     cin.clear();
     cin.ignore(1000000, '\n');
     
-    if (numInput == 1) {//add vertex
+    if (numInput == 1)
+    {//add vertex
       cout << endl << "What character will you assign the vertex?" << endl << GREEN << ">> " << RESET;
       cin >> charInput;
       cin.clear();
@@ -64,7 +66,8 @@ int main()
       addVertex(charInput);
     }
 
-    else if (numInput == 2) {//add edge
+    else if (numInput == 2) 
+    {//add edge
       cout << endl << "What is the label of the first vertex?" << endl << GREEN << ">> " << RESET;
       cin >> charInput;
       cin.clear();
@@ -73,14 +76,16 @@ int main()
       cin >> charInput2;
       cin.clear();
       cin.ignore(1000000, '\n');
-      cout << endl << "What is the weight of this edge?" << endl << GREEN ">> " << RESET;
+      cout << endl << "What is the weight of the edge?" << endl << GREEN ">> " << RESET;
       cin >> numInput;
       cin.clear();
       cin.ignore(1000000, '\n');
       addEdge(charInput, charInput2, numInput);
     }
 
-    else if (numInput == 3) {//remove vertex
+    else if (numInput == 3) 
+    {
+        //remove vertex
       cout << endl << "What is the label of the vertex?" << endl << GREEN << ">> " << RESET;
       cin >> charInput;
       cin.clear();
@@ -88,7 +93,9 @@ int main()
       removeVertex(charInput);
     }
 
-    else if (numInput == 4) {//remove edge
+    else if (numInput == 4) 
+    {
+        //remove edge
       cout << endl << "What is the label of the first vertex?" << endl << GREEN << ">> " << RESET;
       cin >> charInput;
       cin.clear();
@@ -100,7 +107,9 @@ int main()
       removeEdge(charInput, charInput2, true);
     }
     
-    else if (numInput == 5) {//shortest path
+    else if (numInput == 5)
+    {
+        //shortest path
       cout << endl << "What is the label of the starting vertex?" << endl << GREEN << ">> " << RESET;
       cin >> charInput;
       cin.clear();
@@ -115,27 +124,33 @@ int main()
     else if (numInput == 6) //print
       printAdjacency();
 
-    else if (numInput == 7) {//quit
+    else if (numInput == 7) 
+    {
+      //quit
       break;
     }
     
-    else //if something other than 1-7 has been inputted
+    else
       cout << endl << RED << "Invalid Input." << RESET << endl;
     
   }
   return 0;
 }
 
-void addVertex(char label) {//function for adding a vertex
+void addVertex(char label) 
+{
+    //function for adding a vertex
   Vertex* temp = new Vertex(label);
   bool exists = false;
   vector<Vertex*>::iterator v;
-  for (v = vertices.begin(); v != vertices.end(); v++) {//making sure that there isn't a vertex with the given label
+  for (v = vertices.begin(); v != vertices.end(); v++)
+  {
     if ((*v) -> getLabel() == label)
       exists = true;
   }
   
-  if (!exists) {
+  if (!exists) 
+  {
     vertices.push_back(temp);
     cout << endl << GREEN << "Vertex has been added." << RESET << endl;
   }
@@ -146,25 +161,30 @@ void addVertex(char label) {//function for adding a vertex
   delete temp;
 }
 
-void addEdge(char firstLabel, char secondLabel, int weight) {//function for adding edges
+void addEdge(char firstLabel, char secondLabel, int weight)
+ 
+ {//function for adding edges
   Edge* temp = new Edge();
   Vertex* first = NULL;
   Vertex* second = NULL;
   bool exists = false;
   
   vector<Vertex*>::iterator v;
-  for (v = vertices.begin(); v != vertices.end(); v++) {//finding the first and second vertices
-    if ((*v) -> getLabel() == firstLabel) {
+  for (v = vertices.begin(); v != vertices.end(); v++)
+   {
+    if ((*v) -> getLabel() == firstLabel) 
+    {
       first = *v;
     }
     
-    if ((*v) -> getLabel() == secondLabel) {
+    if ((*v) -> getLabel() == secondLabel) 
+    {
       second = *v;
     }
   }
   
   if (first == second) {
-    cout << endl << RED << "You cannot connect a vertex to itself." << RESET << endl;
+    cout << endl << RED << "You cannot connect a vertex to itself. What were you thinking????" << RESET << endl;
     return;
   }
   
@@ -174,7 +194,9 @@ void addEdge(char firstLabel, char secondLabel, int weight) {//function for addi
       exists = true;
   }
   
-  if (first != NULL && second != NULL && !exists) {//if there is no current edge and both first and second exist
+  if (first != NULL && second != NULL && !exists) 
+  {
+    //if there is no current edge and both first and second exist
     temp -> setFirst(first);
     temp -> setSecond(second);
     temp -> setWeight(weight);
@@ -194,7 +216,9 @@ void addEdge(char firstLabel, char secondLabel, int weight) {//function for addi
   delete temp;
 }
 
-void removeEdge(char firstLabel, char secondLabel, bool user) {//removing an edge (put above vertex removal so it can be called)
+void removeEdge(char firstLabel, char secondLabel, bool user) 
+{
+    //removing an edge (put above vertex removal so it can be called)
   if (edges.empty()) {//making sure there are edges
     if (user) //if not called from vertex removal function
       cout << endl << RED << "There are no edges." << RESET << endl;
@@ -207,7 +231,8 @@ void removeEdge(char firstLabel, char secondLabel, bool user) {//removing an edg
   vector<Vertex*>::iterator v;
   vector<Edge*>::iterator e;
   
-  for (v = vertices.begin(); v != vertices.end(); v++) {
+  for (v = vertices.begin(); v != vertices.end(); v++) 
+  {
     if ((*v) -> getLabel() == firstLabel)
       first = *v;
 
@@ -346,14 +371,8 @@ void findShortest(char startLabel, char  endLabel) {//finding the shortest path 
       }
     }
 
-    /*Basically what this algorithm does is find the shortest distance between the starting vertex and all other vertices.
-     *This isn't the most efficient method, but is relatively easy to implement. What this does is go through every unvisited
-     *vertex and update its distance with the current vertex's distance if it is -1 (infinity) or if it's less than the current 
-     *distance of the vertex. After going through the current vertex's connections, it will be replaced and the vertex with an 
-     *unvisited vertex with the next-least distance. This will repeat until every vertex has been visited.
-     */
     
-    while (!unvisited.empty()) {//while there are unvisited vertices
+    while (!unvisited.empty()) {
       int distance = current -> getDistance();
       //cout << endl << "Did this at least once" << endl;
       for (v = unvisited.begin(); v != unvisited.end(); v++) {
@@ -361,29 +380,27 @@ void findShortest(char startLabel, char  endLabel) {//finding the shortest path 
 	//cout << endl << (*v) -> getLabel() << endl;
 	//cout << endl << current -> getLabel() << endl;
 	if ((*v) -> getLabel() != current -> getLabel()) {
-	  //cout << endl << "got here -2" << endl;
 	  for (e = edges.begin(); e != edges.end(); e++) {
-	    //cout << endl << "got here -1" << endl;
 	    if ((*e) -> getFirst() -> getLabel() == current -> getLabel() && (*e) -> getSecond() -> getLabel() == (*v) -> getLabel()) {
-	      //cout << endl << "got here" << endl;
 	      if ((*v) -> getDistance() == -1 || (*v) -> getDistance() > distance + (*e) -> getWeight()) {
-		//cout << endl << "got here 2" << endl;
 		(*v) -> setDistance(distance + (*e) -> getWeight());
 	      }
 	    }
 	  }
 	}
-      }
+      }//oh man these are fucked up
       
       Vertex* newCurrent = NULL;
       
-      for (v = unvisited.begin(); v != unvisited.end(); v++) {//moving the unvisited vertex to visited and erasing
-	if ((*v) -> getLabel() == current -> getLabel()) {
-	  //cout << endl << "happened" << endl;
-	  unvisited.erase(v);
-	  visited.push_back(current);
-	  break;
-	}
+      for (v = unvisited.begin(); v != unvisited.end(); v++) 
+      {
+	    if ((*v) -> getLabel() == current -> getLabel()) 
+        {
+            //cout << endl << "happened" << endl;
+            unvisited.erase(v);
+            visited.push_back(current);
+            break;
+	    }
       }
       
       for (v = unvisited.begin(); v != unvisited.end(); v++) {//finding the next vertex
@@ -430,7 +447,6 @@ void printAdjacency() {//function for printing adjacency matrix
     return;
   }
   
-  //Print out all labels then start a new line, add label on first space then tab and add all the weights for connected vertices
   
   cout << "\t";
   vector<Vertex*>::iterator v;
@@ -452,7 +468,7 @@ void printAdjacency() {//function for printing adjacency matrix
       else {
 	for (e = edges.begin(); e != edges.end(); e++) {
 	  if ((*e) -> getFirst() == *v) {
-	    if ((*e) -> getSecond() == *v2) {//if there is an edge connected from the column and row vertices
+	    if ((*e) -> getSecond() == *v2) {
 	      cout << CYAN << (*e) -> getWeight() << RESET;
 	      connection = true;
 	    }
