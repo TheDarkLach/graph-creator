@@ -1,50 +1,44 @@
 #include <iostream>
-
 #include "vertex.h"
 
 using namespace std;
 
-Vertex::Vertex() {
-  //constructor
-  name = '\0';
-  int c = 0;
-  while (c < 20) {
-    edges[c] = 0;
-    c++;
-  }
+Vertex::Vertex(char inLabel) {
+  label = inLabel;
+  distance = -1;
+  previous = NULL;
 }
 
 Vertex::~Vertex() {
-  //destructor
-  name = '\0';
-  index = 0;
-  int i = 0;
-  while (i < 20) {
-    edges[i] = 0;
-    i++;
-  }
+  delete &label;
+  delete &distance;
+  delete previous;
 }
 
-void Vertex::setName(char newN) {
-  name = newN;
+//Getters
+
+char Vertex::getLabel() {
+  return label;
 }
 
-char Vertex::getName() {
-  return name;
+int Vertex::getDistance() {
+  return distance;
 }
 
-void Vertex::setIndex(int newI) {
-  index = newI;
+Vertex* Vertex::getPrevious() {
+  return previous;
 }
 
-int Vertex::getIndex() {
-  return index;
+//Setters
+
+void Vertex::setLabel(char inLabel) {
+  label = inLabel;
 }
 
-void Vertex::setEdge(int from, int val) {
-  edges[from] = val;
+void Vertex::setDistance(int inDistance) {
+  distance = inDistance;
 }
 
-int Vertex::getEdge(int from) {
-  return edges[from];
+void Vertex::setPrevious(Vertex* inPrevious) {
+  previous = inPrevious;
 }

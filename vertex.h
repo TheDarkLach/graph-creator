@@ -1,21 +1,26 @@
-#ifndef VERTEX_H
-#define VERTEX_H
+#ifndef vertex_h
+#define vertex_h
+
+#include <iostream>
 
 using namespace std;
 
 class Vertex {
  public:
-  Vertex();
+  Vertex(char);
   ~Vertex();
-  void setName(char);
-  char getName();
-  void setIndex(int);
-  int getIndex();
-  void setEdge(int, int);
-  int getEdge(int);
+  //Getters
+  char getLabel();
+  int getDistance();
+  Vertex* getPrevious();
+  //Setters
+  void setLabel(char);
+  void setDistance(int);
+  void setPrevious(Vertex*);
  private:
-  char name;
-  int index;
-  int edges[20];
+  char label;
+  int distance;
+  Vertex* previous;
 };
+
 #endif
